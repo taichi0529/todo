@@ -9,11 +9,13 @@
 import UIKit
 
 class TaskListTableViewController: UITableViewController {
-    
-    let taskCollection = TaskCollection.sharedInstance
 
+    let taskCollection = TaskCollection.sharedInstance
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        taskCollection.load()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -21,27 +23,18 @@ class TaskListTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-//        print (UserDefaults.standard.string(forKey: "hoge"))
-        
-        taskCollection.load()
-        
-
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         self.tableView.reloadData()
     }
     
     @IBAction func didTouchAddButton(_ sender: Any) {
-//        UserDefaults.standard.set("hoge", forKey: "hoge")
-        
-//        let task = Task(title:"hoge")
+//        let task = Task(title: "hoge")
 //        taskCollection.addTask(task)
 //        self.tableView.reloadData()
+        performSegue(withIdentifier: "showToAddViewController", sender: nil)
         
-        self.performSegue(withIdentifier: "ShowToAddViewController", sender: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,11 +44,13 @@ class TaskListTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
+    // セクションの数
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
+    //セクション内の行の数
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return taskCollection.count()
@@ -64,8 +59,8 @@ class TaskListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let task = taskCollection.getTask(at: indexPath.row)
-        cell.textLabel?.text = task.title
+        
+        cell.textLabel?.text = taskCollection.getTask(at: indexPath.row).title
 
         // Configure the cell...
 
@@ -76,14 +71,11 @@ class TaskListTableViewController: UITableViewController {
      セクションのタイトルを返す.
      */
 //    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        if (section == 0 ) {
+//            return "あ"
+//        }
 //        return String(section)
 //    }
-    
-    //セルの選択
-    override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
-        //タップしても選択状態のままじゃなくする。TableCellのselectionをNoneにしてもよい
-//        self.tableView.deselectRow(at: indexPath, animated: true)
-    }
     
 
     /*

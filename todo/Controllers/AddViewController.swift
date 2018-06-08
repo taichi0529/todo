@@ -9,20 +9,20 @@
 import UIKit
 
 class AddViewController: UIViewController, UITextFieldDelegate {
-    
     let taskCollection = TaskCollection.sharedInstance
-
+    
     @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var noteTextView: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        titleTextField.delegate = self
 
+        titleTextField.delegate = self
+        
+        // Do any additional setup after loading the view.
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGesture))
         self.view.addGestureRecognizer(tapRecognizer)
     }
-    
-
     
     //画面をタップすると、キーボードが閉じる動作
     @objc func tapGesture(sender: UITapGestureRecognizer) {
@@ -35,25 +35,33 @@ class AddViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    
     @IBAction func didTouchSaveButton(_ sender: Any) {
         let title = titleTextField.text!
-        if title.isEmpty{
-            // 何も入力がない時に実行される箇所
-            showAlert("タスクのタイトルを入力して下さい")
-        } else {
-            let task = Task(title:title)
-            taskCollection.addTask(task)
-            self.navigationController?.popViewController(animated: true)
+        if title.isEmpty {
+            showAlert("エラー", "タイトルを入力して下さい。")
+            return
         }
+        
+        
+        let task = Task(title: title)
+        if let note = noteTextView.text {
+            task.note = note
+        }
+        taskCollection.addTask(task)
+        self.navigationController?.popViewController(animated: true)
+
+
     }
     
-    func showAlert(_ text: String){
-        let alertController = UIAlertController(title: text, message: nil , preferredStyle: UIAlertControllerStyle.alert)
+    func showAlert(_ title: String, _ text: String){
+        let alertController = UIAlertController(title: title, message: text , preferredStyle: UIAlertControllerStyle.alert)
         let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action) -> Void in
         }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

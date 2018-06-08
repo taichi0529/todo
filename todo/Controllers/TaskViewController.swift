@@ -8,11 +8,13 @@
 
 import UIKit
 
-class AddViewController: UIViewController, UITextFieldDelegate {
+class TaskViewController: UIViewController, UITextFieldDelegate {
     let taskCollection = TaskCollection.sharedInstance
     
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var noteTextView: UITextView!
+    
+    var currentTask: Task? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()

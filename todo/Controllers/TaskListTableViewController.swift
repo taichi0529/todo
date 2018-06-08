@@ -33,7 +33,7 @@ class TaskListTableViewController: UITableViewController {
 //        let task = Task(title: "hoge")
 //        taskCollection.addTask(task)
 //        self.tableView.reloadData()
-        performSegue(withIdentifier: "showToAddViewController", sender: nil)
+        performSegue(withIdentifier: "showToTaskViewController", sender: nil)
         
     }
     
@@ -65,6 +65,12 @@ class TaskListTableViewController: UITableViewController {
         // Configure the cell...
 
         return cell
+    }
+    
+    //セルの選択
+    override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        print (indexPath.row)
     }
     
     /*

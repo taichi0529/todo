@@ -14,7 +14,7 @@
 		52E144EF20B8F8BE00A9F5EF /* TaskListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E144EE20B8F8BE00A9F5EF /* TaskListTableViewController.swift */; };
 		52E144F120B9033E00A9F5EF /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E144F020B9033E00A9F5EF /* Task.swift */; };
 		52E144F320B9063A00A9F5EF /* TaskCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E144F220B9063A00A9F5EF /* TaskCollection.swift */; };
-		52E144F520B9195200A9F5EF /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E144F420B9195200A9F5EF /* AddViewController.swift */; };
+		52E144F520B9195200A9F5EF /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E144F420B9195200A9F5EF /* TaskViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 		52E144EE20B8F8BE00A9F5EF /* TaskListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListTableViewController.swift; sourceTree = "<group>"; };
 		52E144F020B9033E00A9F5EF /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		52E144F220B9063A00A9F5EF /* TaskCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCollection.swift; sourceTree = "<group>"; };
-		52E144F420B9195200A9F5EF /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
+		52E144F420B9195200A9F5EF /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				52E144EE20B8F8BE00A9F5EF /* TaskListTableViewController.swift */,
-				52E144F420B9195200A9F5EF /* AddViewController.swift */,
+				52E144F420B9195200A9F5EF /* TaskViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -168,7 +168,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52E144F520B9195200A9F5EF /* AddViewController.swift in Sources */,
+				52E144F520B9195200A9F5EF /* TaskViewController.swift in Sources */,
 				52E144EF20B8F8BE00A9F5EF /* TaskListTableViewController.swift in Sources */,
 				52E144F120B9033E00A9F5EF /* Task.swift in Sources */,
 				52E144F320B9063A00A9F5EF /* TaskCollection.swift in Sources */,

@@ -47,10 +47,9 @@ class TaskViewController: UIViewController, UITextFieldDelegate {
         
         
         let task = Task(title: title)
-        if let note = noteTextView.text {
-            task.note = note
-        }
+        task.note = noteTextView.text
         taskCollection.addTask(task)
+        taskCollection.save()
         self.navigationController?.popViewController(animated: true)
 
 

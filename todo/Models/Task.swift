@@ -23,10 +23,14 @@ class Task: NSObject, NSCoding{
     required init(coder decoder: NSCoder) {
         self.title = decoder.decodeObject(forKey: "title") as? String ?? ""
         self.note = decoder.decodeObject(forKey: "note") as? String ?? ""
+        self.latitude = decoder.decodeObject(forKey: "latitude") as? Double ?? nil
+        self.longitude = decoder.decodeObject(forKey: "longitude") as? Double ?? nil
     }
     
     func encode(with coder: NSCoder) {
         coder.encode(title, forKey: "title")
         coder.encode(note, forKey: "note")
+        coder.encode(latitude, forKey: "latitude")
+        coder.encode(longitude, forKey: "longitude")
     }
 }

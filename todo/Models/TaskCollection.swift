@@ -19,12 +19,13 @@ class TaskCollection {
     //タスクの追加
     func addTask(_ task: Task) {
         tasks.append(task)
-        
+    }
+    
+    func save () {
         // シリアル化
         let data = NSKeyedArchiver.archivedData(withRootObject: tasks)
         //UserDefaultsにtasksという名前で保存
         UserDefaults.standard.set(data, forKey: "tasks")
-        
     }
     
     func load () {

@@ -51,7 +51,7 @@
         <!--追加-->
         <scene sceneID="fck-g9-7du">
             <objects>
-                <viewController id="gnM-bX-zyD" customClass="TaskViewController" customModule="todo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TaskViewController" id="gnM-bX-zyD" customClass="TaskViewController" customModule="todo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="c6b-JP-TrL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -14,10 +14,17 @@ class TaskViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var noteTextView: UITextView!
     
-    var currentTask: Task? = nil
+    var selectedTask: Task? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        if let selectedTask = self.selectedTask {
+            self.title = "編集"
+            self.titleTextField.text = selectedTask.title
+            self.noteTextView.text = selectedTask.note
+        }
 
         titleTextField.delegate = self
         
@@ -45,15 +52,15 @@ class TaskViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        
-        let task = Task(title: title)
-        if let note = noteTextView.text {
-            task.note = note
+        if let selectedTask = self.selectedTask {
+            selectedTask.note = noteTextView.text
+        } else {
+            let task = Task(title: title)
+            task.note = noteTextView.text
+            taskCollection.addTask(task)
         }
-        taskCollection.addTask(task)
+        taskCollection.save()
         self.navigationController?.popViewController(animated: true)
-
-
     }
     
     func showAlert(_ title: String, _ text: String){

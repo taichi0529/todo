@@ -29,31 +29,44 @@ class TaskViewController: UIViewController, UITextFieldDelegate, GMSMapViewDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         titleTextField.delegate = self
         
+        self.marker.position.latitude = self.defaultLatitude
+        self.marker.position.longitude = self.defaultLongitude
+        
+        if let selectedTask = self.selectedTask {
+            self.title = "編集"
+            titleTextField.text = selectedTask.title
+            noteTextView.text = selectedTask.note
+            if let latitude = selectedTask.latitude, let longitude = selectedTask.longitude {
+                self.marker.position.latitude = latitude
+                self.marker.position.longitude = longitude
+            }
+        }
+
         // Do any additional setup after loading the view.
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGesture))
         self.view.addGestureRecognizer(tapRecognizer)
         
-        let camera = GMSCameraPosition.camera(withLatitude: self.defaultLatitude,
-                                              longitude: self.defaultLongitude,
-                                              zoom: zoomLevel)
+        //        let camera = GMSCameraPosition.camera(withLatitude: defaultLatitude,
+        //                                              longitude: defaultLongitude,
+        //                                              zoom: 14)
+        let camera = GMSCameraPosition.camera(withTarget: marker.position, zoom: 15)
         self.mapView = GMSMapView.map(withFrame: mapCanvasView.bounds, camera: camera)
+        
         // 自分の場所を中心に合わせるボタン
-//        self.mapView.settings.myLocationButton = true
+        self.mapView?.settings.myLocationButton = true
         // 自分の場所を表示する
-//        self.mapView.isMyLocationEnabled = true
-//                self.mapView.translatesAutoresizingMaskIntoConstraints = false
-//                self.mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.mapView.delegate = self
+        self.mapView?.isMyLocationEnabled = true
         
-        mapCanvasView.addSubview(self.mapView)
+        self.mapView?.delegate = self
         
+        mapCanvasView.addSubview(self.mapView!)
         
         // 自分の場所を取得
         // https://dev.classmethod.jp/smartphone/ios-corelocation-swift3/
-        self.locationManager = CLLocationManager()
+        //        self.locationManager = CLLocationManager()
         // 更新頻度や精度で消費電力がかわってくる
         // 位置情報の更新をどれ位一時停止出来るかを判断 自動車用、歩行者用等など
         self.locationManager.activityType = .other
@@ -63,32 +76,15 @@ class TaskViewController: UIViewController, UITextFieldDelegate, GMSMapViewDeleg
         self.locationManager.distanceFilter = 50
         // 開始
         self.locationManager.startUpdatingLocation()
-        // delegate
-        self.locationManager.delegate = self
         
-        marker.tracksViewChanges = false
-        marker.isDraggable = true
-        marker.position.latitude = self.defaultLatitude
-        marker.position.longitude = self.defaultLongitude
-
         
-        if let selectedTask = self.selectedTask {
-            self.title = "編集"
-            self.titleTextField.text = selectedTask.title
-            self.noteTextView.text = selectedTask.note
-            if let latitude = selectedTask.latitude, let longitude = selectedTask.longitude {
-                marker.position.latitude = latitude
-                marker.position.longitude = longitude
-                self.mapView.camera = GMSCameraPosition.camera(withTarget: marker.position, zoom: self.zoomLevel)
-            }
-        }
-        
-        marker.map = self.mapView
+        self.marker.map = self.mapView
     }
     
     //画面をタップすると、キーボードが閉じる動作
     @objc func tapGesture(sender: UITapGestureRecognizer) {
         titleTextField.resignFirstResponder()
+        noteTextView.resignFirstResponder()
     }
     
     //リターンをタップすると、キーボードが閉じる動作
@@ -113,6 +109,7 @@ class TaskViewController: UIViewController, UITextFieldDelegate, GMSMapViewDeleg
         print (self.marker.position.latitude)
         
         if let selectedTask = self.selectedTask {
+            selectedTask.title = title
             selectedTask.note = noteTextView.text
             selectedTask.latitude = marker.position.latitude
             selectedTask.longitude = marker.position.longitude

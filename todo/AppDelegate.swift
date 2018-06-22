@@ -8,6 +8,7 @@
 
 import UIKit
 import GoogleMaps
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,7 +18,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        GMSServices.provideAPIKey("")
+        GMSServices.provideAPIKey("AIzaSyAeujjT919poslI2R1QWCmUXsyG1Vn8iNw")
+        FirebaseApp.configure()
+       
+        // ログインしてたら
+        if User.shared.isLogined() {
+            //Storyboardを指定
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            //Viewcontrollerを指定
+            let initialViewController = storyboard.instantiateViewController(withIdentifier: "TaskNavigationController")
+            //rootViewControllerに入れる
+            self.window?.rootViewController = initialViewController
+        }
+        
         return true
     }
 

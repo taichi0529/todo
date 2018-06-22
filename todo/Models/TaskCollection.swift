@@ -7,13 +7,12 @@
 //
 
 import UIKit
+import Firebase
 
 class TaskCollection {
     var tasks:[Task] = []
     
-    static let sharedInstance = TaskCollection()
-    
-    
+    static let shared = TaskCollection()
     private init(){}
     
     //タスクの追加

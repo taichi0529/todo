@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Firebase
 
 class TaskListTableViewController: UITableViewController {
 
-    let taskCollection = TaskCollection.sharedInstance
+    let taskCollection = TaskCollection.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +37,17 @@ class TaskListTableViewController: UITableViewController {
         performSegue(withIdentifier: "showToTaskViewController", sender: nil)
         
     }
+    
+    // 本当はUserクラス
+    @IBAction func didTouchLoguoutButton(_ sender: Any) {
+        try! Auth.auth().signOut()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navigationController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.window?.rootViewController =  navigationController
+        
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -33,4 +33,6 @@ class Task: NSObject, NSCoding{
         coder.encode(latitude, forKey: "latitude")
         coder.encode(longitude, forKey: "longitude")
     }
+    
+    
 }

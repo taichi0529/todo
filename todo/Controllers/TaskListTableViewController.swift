@@ -40,7 +40,7 @@ class TaskListTableViewController: UITableViewController {
     
     // 本当はUserクラス
     @IBAction func didTouchLoguoutButton(_ sender: Any) {
-        try! Auth.auth().signOut()
+        User.shared.signOut()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navigationController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

@@ -9,4 +9,5 @@ target 'todo' do
   pod 'GoogleMaps'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'    
 end

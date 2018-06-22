@@ -8,12 +8,15 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 
 class TaskCollection {
     var tasks:[Task] = []
     
     static let shared = TaskCollection()
     private init(){}
+    
+    let db = Firestore.firestore()
     
     //タスクの追加
     func addTask(_ task: Task) {
@@ -48,3 +51,4 @@ class TaskCollection {
     }
     
 }
+

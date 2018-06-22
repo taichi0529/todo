@@ -12,9 +12,23 @@ import FirebaseAuth
 // こういう風にUserのモデルでまとめればコントローラーの肥大化や、ログインに使う方法を変えたときに便利
 class User {
     static let shared = User()
-    private init(){}
     
-    var currentUser:  FirebaseAuth.User?
+    private var currentUser:  FirebaseAuth.User?
+    
+    private init(){
+        self.currentUser = Auth.auth().currentUser
+    }
+    
+    func getUid () -> String? {
+        if let user = self.currentUser {
+            return user.uid
+        }
+        return nil
+    }
+    
+    func signOut () {
+        try! Auth.auth().signOut()
+    }
     
     func createUser (withEmail: String, password: String, completion: @escaping ((_ error: Error?) -> Void)) {
         Auth.auth().createUser(withEmail: withEmail, password: password) { (user, error) in
@@ -41,7 +55,7 @@ class User {
     }
     
     func isLogined () -> Bool {
-        if let _ = Auth.auth().currentUser {
+        if let _ = self.currentUser {
             return true
         }
         return false

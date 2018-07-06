@@ -16,7 +16,7 @@ class TaskListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        taskCollection.load()
+        taskCollection.load(completion: {_ in })
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

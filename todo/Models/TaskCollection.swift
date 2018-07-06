@@ -99,7 +99,7 @@ class TaskCollection {
                 documents.forEach({ (document) in
                     if document.exists {
                         let data = document.data()
-                        let task = Task(data: data)
+                        let task = Task(id: document.documentID, data: data)
                         self.addTask(task)
                     }
                 })

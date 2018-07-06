@@ -28,7 +28,8 @@ class Task: NSObject, NSCoding{
         print ("taskのインスタンスが破棄されました")
     }
     
-    init(data: [String: Any]) {
+    init(id: String, data: [String: Any]) {
+        self.id = id
         if let title = data["title"] as? String {
             self.title = title
         }

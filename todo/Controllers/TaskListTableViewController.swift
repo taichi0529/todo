@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import PKHUD
 
 class TaskListTableViewController: UITableViewController {
 
@@ -15,8 +16,11 @@ class TaskListTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        taskCollection.load(completion: {_ in })
+        HUD.show(.progress)
+        taskCollection.load {
+            self.tableView.reloadData()
+            HUD.hide()
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -41,6 +45,7 @@ class TaskListTableViewController: UITableViewController {
     // 本当はUserクラス
     @IBAction func didTouchLoguoutButton(_ sender: Any) {
         User.shared.signOut()
+        taskCollection.clear()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navigationController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

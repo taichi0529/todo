@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Task: Codable{
+class Task: NSObject, NSCoding{
     var id: String?
     var title: String = ""
     var note: String = ""
@@ -21,29 +21,45 @@ class Task: Codable{
         self.title = title
     }
     
-    init(id: String, data: [String: Any]) {
-        self.id = id
-        title = data["title"] as! String
-        note = data["note"] as! String
-        latitude = data["latitude"] as? Double
-        longitude = data["longitude"] as? Double
+    deinit {
+        print ("taskのインスタンスが破棄されました")
     }
     
-    
-    func toJSON () -> String?{
-        // こんな風に作ることもできるが面倒くさい
-        // return "{\"title\":\"\(title)\"}"
-        let jsonEncoder = JSONEncoder()
-        let jsonData = try! jsonEncoder.encode(self)
-        return String(data: jsonData, encoding: String.Encoding.utf8)
+    init(data: [String: Any]) {
+        if let title = data["title"] as? String {
+            self.title = title
+        }
+        if let note = data["note"] as? String {
+            self.note = note
+        }
+        if let latitude = data["latitude"] as? Double {
+            self.latitude = latitude
+        }
+        if let longitude = data["longitude"] as? Double {
+            self.longitude = longitude
+        }
     }
     
-    func toDictionary () -> [String: Any] {
+    required init(coder decoder: NSCoder) {
+        self.title = decoder.decodeObject(forKey: "title") as? String ?? ""
+        self.note = decoder.decodeObject(forKey: "note") as? String ?? ""
+        self.latitude = decoder.decodeObject(forKey: "latitude") as? Double ?? nil
+        self.longitude = decoder.decodeObject(forKey: "longitude") as? Double ?? nil
+    }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(title, forKey: "title")
+        coder.encode(note, forKey: "note")
+        coder.encode(latitude, forKey: "latitude")
+        coder.encode(longitude, forKey: "longitude")
+    }
+    
+    func toData() -> [String: Any] {
         return [
-            "title": title,
-            "note": note,
-            "latitude": latitude!,
-            "longitude": longitude!
+            "title": self.title,
+            "note": self.note,
+            "latitude": self.latitude!,
+            "longitude": self.longitude!
         ]
     }
     

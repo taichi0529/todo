@@ -16,84 +16,60 @@ class TaskCollection {
     static let shared = TaskCollection()
     private init(){}
     
-    let db = Firestore.firestore()
-    
     //タスクの追加
     func addTask(_ task: Task) {
         tasks.append(task)
     }
     
-    func getTaskCollectionRef() -> CollectionReference? {
+    let db = Firestore.firestore()
+    
+    func getCollectionRef () -> CollectionReference? {
         guard let uid = User.shared.getUid() else {
-            print ("error")
+            print ("Uidを取得出来ませんでした。")
             return nil
         }
-        return db.collection("data").document(uid).collection("task")
+        return db.collection("list").document(uid).collection("task")
     }
     
     func save () {
-//        // シリアル化
-//        let data = NSKeyedArchiver.archivedData(withRootObject: tasks)
-//        //UserDefaultsにtasksという名前で保存
-//        UserDefaults.standard.set(data, forKey: "tasks")
-
-        
-        guard let taskRef = getTaskCollectionRef() else {
-            print ("dddddddddddddddddddddddddddd")
-            return
-        }
-        
+        let collectionRef = getCollectionRef()
         tasks.forEach { (task) in
+            
             if let id = task.id {
-                taskRef.document(id).setData(task.toDictionary())
+                let documentRef = collectionRef?.document(id)
+                documentRef?.setData(task.toData())
+                
             } else {
-                var ref: DocumentReference? = nil
-                ref = taskRef.addDocument(data: task.toDictionary()){ err in
-                    if let err = err {
-                        print("Error adding document: \(err)")
-                    } else {
-                        print("Document added with ID: \(ref!.documentID)")
-                        task.id = ref!.documentID
-                    }
-                }
+                
+                let documentRef = collectionRef?.addDocument(data: task.toData())
+                task.id = documentRef?.documentID
             }
         }
-        
     }
     
-    func clear () {
-        tasks = []
-    }
-    
-    func load (completion: @escaping ((_ error: Error?) -> Void)) {
-        guard let taskRef = getTaskCollectionRef() else {
-            return
-        }
-        
-        taskRef.getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-                completion(err)
-            } else {
-                for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
+    func load (completion: @escaping ()->Void) {
+        let collectionRef = getCollectionRef()
+        collectionRef?.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print (error.localizedDescription)
+                return
+            }
+            if let documents = querySnapshot?.documents {
+                documents.forEach({ (document) in
                     if document.exists {
-                        self.addTask(Task(id: document.documentID, data: document.data()))
-                    } else {
-                        print("Document does not exist")
+                        let data = document.data()
+                        let task = Task(data: data)
+                        self.addTask(task)
                     }
-                }
-                completion(nil)
+                })
             }
+            completion()
         }
         
-        // UserDefaultsからtasksというキーでデータを取得
-//        if let data = UserDefaults.standard.data(forKey: "tasks") {
-//            // 取得したデータをTaskの配列に変換
-//            if let tasks = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Task] {
-//                self.tasks = tasks
-//            }
-//        }
+    }
+    
+    func clear() {
+        tasks = []
     }
     
     // タスクの数
@@ -107,4 +83,3 @@ class TaskCollection {
     }
     
 }
-

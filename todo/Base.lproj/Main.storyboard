@@ -172,6 +172,7 @@
                                     <constraint firstAttribute="height" constant="45" id="buX-hL-KXP"/>
                                 </constraints>
                                 <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ToDOアプリへようこそ！下記から新規登録もしくはログインを行って下さい。" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="05M-kX-91V">
@@ -209,7 +210,7 @@
                                 </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Uls-5P-jgW" firstAttribute="top" secondItem="Qdt-Sr-4JF" secondAttribute="bottom" constant="32" id="92a-0r-vt3"/>
                             <constraint firstItem="Qdt-Sr-4JF" firstAttribute="top" secondItem="quw-fi-7LP" secondAttribute="bottom" constant="32" id="Dwt-v0-IXH"/>

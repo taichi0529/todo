@@ -8,7 +8,8 @@
 
 import UIKit
 
-class Task: NSObject, NSCoding{
+class Task: Codable{
+    var id: String?
     var title: String = ""
     var note: String = ""
     
@@ -20,18 +21,30 @@ class Task: NSObject, NSCoding{
         self.title = title
     }
     
-    required init(coder decoder: NSCoder) {
-        self.title = decoder.decodeObject(forKey: "title") as? String ?? ""
-        self.note = decoder.decodeObject(forKey: "note") as? String ?? ""
-        self.latitude = decoder.decodeObject(forKey: "latitude") as? Double ?? nil
-        self.longitude = decoder.decodeObject(forKey: "longitude") as? Double ?? nil
+    init(id: String, data: [String: Any]) {
+        self.id = id
+        title = data["title"] as! String
+        note = data["note"] as! String
+        latitude = data["latitude"] as? Double
+        longitude = data["longitude"] as? Double
     }
     
-    func encode(with coder: NSCoder) {
-        coder.encode(title, forKey: "title")
-        coder.encode(note, forKey: "note")
-        coder.encode(latitude, forKey: "latitude")
-        coder.encode(longitude, forKey: "longitude")
+    
+    func toJSON () -> String?{
+        // こんな風に作ることもできるが面倒くさい
+        // return "{\"title\":\"\(title)\"}"
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try! jsonEncoder.encode(self)
+        return String(data: jsonData, encoding: String.Encoding.utf8)
+    }
+    
+    func toDictionary () -> [String: Any] {
+        return [
+            "title": title,
+            "note": note,
+            "latitude": latitude!,
+            "longitude": longitude!
+        ]
     }
     
     

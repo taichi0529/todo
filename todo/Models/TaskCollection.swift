@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 import FirebaseFirestore
 
 class TaskCollection {
@@ -31,16 +32,55 @@ class TaskCollection {
         return db.collection("list").document(uid).collection("task")
     }
     
+    func uploadToStorage (image: UIImage?, _ completion: @escaping (_ url: String?) -> Void) {
+        guard let image = image else {
+            completion(nil)
+            return
+        }
+        let storageRef = Storage.storage().reference()
+        let currentTime = String(Int(floor(NSDate().timeIntervalSince1970 * 100000)))
+        
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        //画像を非同期にアップロード
+        let dataRef = storageRef.child("\(currentTime).jpg")
+        let data = UIImageJPEGRepresentation(image, 0.8)
+        dataRef.putData(data!, metadata: metadata) { (metadata, error) in
+            guard let _ = metadata else {
+                print (error.debugDescription)
+                completion(nil)
+                return
+            }
+            
+            storageRef.downloadURL { (url, error) in
+                guard let downloadURL = url else {
+                    completion(nil)
+                    return
+                }
+                completion(downloadURL.absoluteString)
+            }
+        }
+    }
+    
+    //TODO クルクルさせる, GCD使う
     func save () {
         let collectionRef = getCollectionRef()
         tasks.forEach { (task) in
-            
+//            self.uploadToStorage(image: task.image, { (url) in
+//                if let id = task.id {
+//                    let documentRef = collectionRef?.document(id)
+//                    documentRef?.setData(task.toData())
+//                    
+//                } else {
+//                    let documentRef = collectionRef?.addDocument(data: task.toData())
+//                    task.id = documentRef?.documentID
+//                }
+//            })
             if let id = task.id {
                 let documentRef = collectionRef?.document(id)
                 documentRef?.setData(task.toData())
                 
             } else {
-                
                 let documentRef = collectionRef?.addDocument(data: task.toData())
                 task.id = documentRef?.documentID
             }
@@ -48,6 +88,7 @@ class TaskCollection {
     }
     
     func load (completion: @escaping ()->Void) {
+        self.clear()
         let collectionRef = getCollectionRef()
         collectionRef?.getDocuments { (querySnapshot, error) in
             if let error = error {

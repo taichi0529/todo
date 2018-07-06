@@ -16,6 +16,9 @@ class Task: NSObject, NSCoding{
     var latitude: Double?
     var longitude: Double?
     
+    var imageUrl: String?
+    var image: UIImage?
+    
     
     init(title: String) {
         self.title = title

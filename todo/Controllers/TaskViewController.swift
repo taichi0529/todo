@@ -9,12 +9,15 @@
 import UIKit
 import GoogleMaps
 
-class TaskViewController: UIViewController, UITextFieldDelegate, GMSMapViewDelegate, CLLocationManagerDelegate {
+class TaskViewController: UIViewController, UITextFieldDelegate, GMSMapViewDelegate, CLLocationManagerDelegate,
+UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     let taskCollection = TaskCollection.shared
     
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var noteTextView: UITextView!
     @IBOutlet weak var mapCanvasView: UIView!
+    @IBOutlet weak var todoImageView: UIImageView!
+    
     
     let marker = GMSMarker()
     
@@ -27,10 +30,18 @@ class TaskViewController: UIViewController, UITextFieldDelegate, GMSMapViewDeleg
     
     var selectedTask: Task? = nil
     
+    var changeImage = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         titleTextField.delegate = self
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped(sender:)))
+        todoImageView.isUserInteractionEnabled = true
+        todoImageView.addGestureRecognizer(tapGestureRecognizer)
+        
+        
         
         self.marker.position.latitude = self.defaultLatitude
         self.marker.position.longitude = self.defaultLongitude
@@ -81,6 +92,61 @@ class TaskViewController: UIViewController, UITextFieldDelegate, GMSMapViewDeleg
         self.marker.map = self.mapView
     }
     
+    @objc func imageTapped(sender: UITapGestureRecognizer) {
+        
+        let alert = UIAlertController(title:"", message: "選択してください", preferredStyle: UIAlertControllerStyle.actionSheet)
+        alert.addAction(UIAlertAction(title: "カメラ", style: UIAlertActionStyle.default, handler: {
+            (action: UIAlertAction!) in
+            print("カメラ")
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+                let cameraPicker = UIImagePickerController()
+                cameraPicker.sourceType = UIImagePickerControllerSourceType.camera
+                cameraPicker.delegate = self
+                self.present(cameraPicker, animated: true, completion: nil)
+                
+            } else {
+                print ("カメラ使えない")
+            }
+
+        }))
+        alert.addAction(UIAlertAction(title: "アルバム", style: UIAlertActionStyle.default, handler: {
+            (action: UIAlertAction!) in
+            print("アルバム")
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+                let cameraPicker = UIImagePickerController()
+                cameraPicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+                cameraPicker.delegate = self
+                self.present(cameraPicker, animated: true, completion: nil)
+                
+            } else {
+                print ("アルバム使えない")
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel, handler: {
+            (action: UIAlertAction!) in
+            print("キャンセル")
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    //　撮影もしくは画像を選択したら呼ばれる
+    func imagePickerController(_ imagePicker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            
+            todoImageView.contentMode = .scaleAspectFit
+            todoImageView.image = pickedImage
+            self.changeImage = true
+        }
+        
+        //閉じる処理
+        imagePicker.dismiss(animated: true, completion: nil)
+        
+    }
+    
     //画面をタップすると、キーボードが閉じる動作
     @objc func tapGesture(sender: UITapGestureRecognizer) {
         titleTextField.resignFirstResponder()
@@ -113,14 +179,21 @@ class TaskViewController: UIViewController, UITextFieldDelegate, GMSMapViewDeleg
             selectedTask.note = noteTextView.text
             selectedTask.latitude = marker.position.latitude
             selectedTask.longitude = marker.position.longitude
+            if changeImage {
+                selectedTask.image = todoImageView.image
+            }
         } else {
             let task = Task(title: title)
             task.note = noteTextView.text
             task.latitude = marker.position.latitude
             task.longitude = marker.position.longitude
+            if changeImage {
+                task.image = todoImageView.image
+            }
             taskCollection.addTask(task)
         }
         taskCollection.save()
+        changeImage = false
         self.navigationController?.popViewController(animated: true)
     }
     

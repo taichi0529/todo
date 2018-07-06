@@ -16,6 +16,9 @@ PODS:
   - Firebase/Firestore (5.1.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (= 0.12.2)
+  - Firebase/Storage (5.1.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (= 3.0.0)
   - FirebaseAnalytics (5.0.1):
     - FirebaseCore (~> 5.0)
     - FirebaseInstanceID (~> 3.0)
@@ -39,6 +42,9 @@ PODS:
     - Protobuf (~> 3.1)
   - FirebaseInstanceID (3.0.0):
     - FirebaseCore (~> 5.0)
+  - FirebaseStorage (3.0.0):
+    - FirebaseCore (~> 5.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleMaps (2.7.0):
     - GoogleMaps/Maps (= 2.7.0)
   - GoogleMaps/Base (2.7.0)
@@ -73,6 +79,7 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - Nuke (7.1)
   - PKHUD (5.0.0)
   - Protobuf (3.5.0)
 
@@ -80,8 +87,10 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Firestore
+  - Firebase/Storage
   - GoogleMaps
-  - PKHUD
+  - Nuke
+  - PKHUD (~> 5.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -92,6 +101,7 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseFirestore
     - FirebaseInstanceID
+    - FirebaseStorage
     - GoogleMaps
     - GoogleToolboxForMac
     - gRPC
@@ -101,6 +111,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - leveldb-library
     - nanopb
+    - Nuke
     - PKHUD
     - Protobuf
 
@@ -112,6 +123,7 @@ SPEC CHECKSUMS:
   FirebaseCore: b81044df1044c0857a0737c6324678b72d4f7f00
   FirebaseFirestore: 93b8bf70484c92c271ae93940fe1e2ca9e35f92b
   FirebaseInstanceID: 83e0040351565df711a5db3d8ebe5ea21aca998a
+  FirebaseStorage: 7ca4bb7b58a25fa647b04f524033fc7cb7eb272b
   GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   gRPC: 9362451032695e2dfb7bafcd3740e3a27939e4ff
@@ -121,9 +133,10 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  Nuke: 922cb05945ed5c7980a3ad0bc9ae57fbbd12899f
   PKHUD: 3c001512c6e002091184197a8de7a20420786e3b
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
 
-PODFILE CHECKSUM: 713e013ecb39f2b26bb07d070997abeadde6b127
+PODFILE CHECKSUM: 759bd6b41b66afe15e9f4d12a649b5aa067bbc97
 
 COCOAPODS: 1.5.3

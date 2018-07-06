@@ -10,5 +10,7 @@ target 'todo' do
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'    
-  pod 'PKHUD'
+  pod 'Firebase/Storage'
+  pod 'PKHUD', '~> 5.0'
+  pod 'Nuke'
 end

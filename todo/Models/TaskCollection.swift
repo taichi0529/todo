@@ -44,16 +44,21 @@ class TaskCollection {
         metadata.contentType = "image/jpeg"
         //画像を非同期にアップロード
         let dataRef = storageRef.child("\(currentTime).jpg")
-        let data = UIImageJPEGRepresentation(image, 0.8)
+        let data = UIImageJPEGRepresentation(image, 0.5)
         dataRef.putData(data!, metadata: metadata) { (metadata, error) in
-            guard let _ = metadata else {
+            guard let metadata = metadata else {
                 print (error.debugDescription)
                 completion(nil)
                 return
             }
             
-            storageRef.downloadURL { (url, error) in
+            let size = metadata.size
+            
+            print (size)
+            
+            dataRef.downloadURL { (url, error) in
                 guard let downloadURL = url else {
+                    print (error.debugDescription)
                     completion(nil)
                     return
                 }
@@ -66,24 +71,20 @@ class TaskCollection {
     func save () {
         let collectionRef = getCollectionRef()
         tasks.forEach { (task) in
-//            self.uploadToStorage(image: task.image, { (url) in
-//                if let id = task.id {
-//                    let documentRef = collectionRef?.document(id)
-//                    documentRef?.setData(task.toData())
-//                    
-//                } else {
-//                    let documentRef = collectionRef?.addDocument(data: task.toData())
-//                    task.id = documentRef?.documentID
-//                }
-//            })
-            if let id = task.id {
-                let documentRef = collectionRef?.document(id)
-                documentRef?.setData(task.toData())
-                
-            } else {
-                let documentRef = collectionRef?.addDocument(data: task.toData())
-                task.id = documentRef?.documentID
-            }
+            self.uploadToStorage(image: task.image, { (url) in
+                print (url)
+                if let url = url {
+                    task.imageUrl = url
+                }
+                if let id = task.id {
+                    let documentRef = collectionRef?.document(id)
+                    documentRef?.setData(task.toData())
+                    
+                } else {
+                    let documentRef = collectionRef?.addDocument(data: task.toData())
+                    task.id = documentRef?.documentID
+                }
+            })
         }
     }
     

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Nuke
 
 class Task: NSObject, NSCoding{
     var id: String?
@@ -42,6 +43,9 @@ class Task: NSObject, NSCoding{
         if let longitude = data["longitude"] as? Double {
             self.longitude = longitude
         }
+        if let imageUrl = data["imageUrl"] as? String {
+            self.imageUrl = imageUrl
+        }
     }
     
     required init(coder decoder: NSCoder) {
@@ -60,11 +64,23 @@ class Task: NSObject, NSCoding{
     
     func toData() -> [String: Any] {
         return [
+            "imageUrl": self.imageUrl!,
             "title": self.title,
             "note": self.note,
             "latitude": self.latitude!,
             "longitude": self.longitude!
         ]
+    }
+    
+    func loadImage(imageView: UIImageView) {
+        guard let url = self.imageUrl else {
+            return
+        }
+//        let req = URLRequest(url: URL(string: url)!,
+//                             cachePolicy: .returnCacheDataElseLoad,
+//                             timeoutInterval: 10)
+        Nuke.loadImage(with: URL(string: url)!, into: imageView)
+
     }
     
     

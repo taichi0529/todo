@@ -54,6 +54,9 @@ UINavigationControllerDelegate, UIImagePickerControllerDelegate {
                 self.marker.position.latitude = latitude
                 self.marker.position.longitude = longitude
             }
+            
+            selectedTask.loadImage(imageView: todoImageView)
+            
         }
 
         // Do any additional setup after loading the view.
@@ -138,7 +141,7 @@ UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             
             todoImageView.contentMode = .scaleAspectFit
-            todoImageView.image = pickedImage
+            todoImageView.image = pickedImage.resize(size: CGSize(width: 300, height: 300))
             self.changeImage = true
         }
         

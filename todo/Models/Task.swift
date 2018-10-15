@@ -76,10 +76,14 @@ class Task: NSObject, NSCoding{
         guard let url = self.imageUrl else {
             return
         }
+        Nuke.loadImage(with: URL(string: url)!, into: imageView)
+        
+//        キャッシュを使う場合
 //        let req = URLRequest(url: URL(string: url)!,
 //                             cachePolicy: .returnCacheDataElseLoad,
 //                             timeoutInterval: 10)
-        Nuke.loadImage(with: URL(string: url)!, into: imageView)
+//        Nuke.loadImage(with: ImageRequest(urlRequest: req), into: imageView)
+
 
     }
     
